@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Panduan UTS Algoritma & Pemrograman (C#)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            900: '#134e4a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Phosphor Icons for UI SVG elements -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.5); border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header Navigation Bar -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Title -->
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-brand-600 text-white rounded-xl shadow-md">
+                        <i class="ph-bold ph-code text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-tight bg-gradient-to-r from-brand-600 to-teal-500 bg-clip-text text-transparent">
+                            Panduan UTS Alpro (C#)
+                        </h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Fokus Materi W2, W4 & W6 · .NET Console</p>
+                    </div>
+                </div>
+
+                <!-- Right Actions: Search & Dark Mode -->
+                <div class="flex items-center gap-2">
+                    <div class="relative hidden md:block">
+                        <i class="ph-bold ph-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
+                        <input type="text" id="searchInput" placeholder="Cari materi, error, operator..." 
+                            class="pl-9 pr-4 py-1.5 text-sm bg-slate-100 dark:bg-slate-800 rounded-full border border-transparent focus:border-brand-500 focus:outline-none w-64 transition">
+                    </div>
+                    
+                    <button id="themeToggle" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition" aria-label="Toggle Theme">
+                        <i class="ph-bold ph-moon text-lg dark:hidden"></i>
+                        <i class="ph-bold ph-sun text-lg hidden dark:block text-amber-400"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Menu -->
+            <nav class="flex space-x-1 sm:space-x-4 border-t border-slate-100 dark:border-slate-800/60 overflow-x-auto custom-scrollbar py-2" id="navTabs">
+                <button data-target="w2" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 whitespace-nowrap bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800">
+                    <i class="ph-bold ph-article"></i> W2 · Dasar C# & Flowchart
+                </button>
+                <button data-target="w4" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="ph-bold ph-git-fork"></i> W4 · Switch & Operator
+                </button>
+                <button data-target="w6" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="ph-bold ph-tree-structure"></i> W6 · Nested IF
+                </button>
+                <button data-target="simulator" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="ph-bold ph-calculator"></i> Simulator Nilai
+                </button>
+                <button data-target="quiz" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="ph-bold ph-exam"></i> Kuis UTS
+                </button>
+                <button data-target="checklist" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="ph-bold ph-check-square"></i> Checklist Prep
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Notification Banner / Toast Message -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900 px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transition">
+        <i class="ph-bold ph-check-circle text-emerald-400 dark:text-emerald-600 text-xl"></i>
+        <span id="toastMsg" class="text-sm font-medium">Notifikasi</span>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+        <!-- ================= SECTION W2 ================= -->
+        <section id="w2" class="tab-content space-y-6">
+            <!-- Header Card -->
+            <div class="bg-gradient-to-r from-brand-600 to-teal-700 text-white rounded-2xl p-6 sm:p-8 shadow-lg">
+                <div class="flex items-center gap-2 text-teal-200 text-sm font-semibold uppercase tracking-wider mb-2">
+                    <i class="ph-bold ph-book-open"></i> Minggu 02
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold">Variabel, Tipe Data, Input/Output, & Flowchart</h2>
+                <p class="mt-2 text-teal-100 max-w-2xl">Fondasi utama pemrograman C# (.NET). Memahami alur kompilasi, tipe data presisi, aturan penamaan, serta pembuatan flowchart standar.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Pola Program Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+                        <i class="ph-bold ph-cpu text-brand-500"></i> Pola Utama & Eksekusi Program
+                    </h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
+                        Semua program komputer mengikuti struktur dasar: <span class="px-2 py-0.5 rounded bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 font-semibold">INPUT → PROSES → OUTPUT</span>.
+                    </p>
+                    <div class="space-y-3 text-xs sm:text-sm">
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-700">
+                            <span class="font-bold text-brand-600 dark:text-brand-400">Alur Kompilasi C#:</span><br>
+                            <code class="text-slate-700 dark:text-slate-300">Program.cs → Kompiler (Roslyn) → Bytecode (IL) → CLR (JIT Engine) → Executable</code>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-700">
+                            <span class="font-bold text-brand-600 dark:text-brand-400">Perintah Terminal .NET CLI:</span>
+                            <ul class="list-disc pl-5 mt-1 space-y-1 font-mono text-slate-600 dark:text-slate-400">
+                                <li><code>dotnet new console -n NamaApp</code> (Buat project)</li>
+                                <li><code>dotnet build</code> (Cek syntax & kompilasi)</li>
+                                <li><code>dotnet run</code> (Jalankan program)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variabel Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+                        <i class="ph-bold ph-textbox text-brand-500"></i> Variabel & Scope
+                    </h3>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="ph-bold ph-caret-right text-brand-500 mt-1"></i>
+                            <span><b>Siklus:</b> Deklarasi <code>int stok;</code> → Inisialisasi <code>stok = 10;</code> → Assignment <code>stok += 5;</code></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="ph-bold ph-caret-right text-brand-500 mt-1"></i>
+                            <span><b>Aturan Nama:</b> Tidak boleh diawali angka, tanpa spasi/tanda min (<code>-</code>), bukan keyword, dan <b>Case-Sensitive</b> (<code>nama</code> ≠ <code>Nama</code>).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="ph-bold ph-caret-right text-brand-500 mt-1"></i>
+                            <span><b>Konvensi Penulisan:</b> Variabel lokal pakaii <code>camelCase</code>, Method/Class pakai <code>PascalCase</code>, Private Field pakai <code>_camelCase</code>.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="ph-bold ph-caret-right text-brand-500 mt-1"></i>
+                            <span><b>Kata Kunci Penting:</b> <code>var</code> (Tipe implisit tetapi tetap *strongly-typed*), <code>const</code> (Wajib diisi saat compile time), <code>readonly</code> (Bisa diisi saat runtime).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Table Selection Data Types -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm overflow-hidden">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+                    <i class="ph-bold ph-table text-brand-500"></i> Panduan Memilih Tipe Data Presisi
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 dark:bg-slate-700/50 text-slate-700 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">
+                                <th class="p-3 font-semibold">Jenis Data Praktis</th>
+                                <th class="p-3 font-semibold">Tipe Data C#</th>
+                                <th class="p-3 font-semibold">Catatan Penting / Suffix</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/60 text-slate-600 dark:text-slate-300">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">Umur, Jumlah barang, Stok</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">int</td>
+                                <td class="p-3">Bilangan bulat (-2.1 miliar s.d +2.1 miliar).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">NIK, Nomor Rekening Bank</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">long / string</td>
+                                <td class="p-3">Gunakan <code>string</code> jika tidak ada operasi aritmatika.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">NIM, Kode Pos, Nomor HP</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">string</td>
+                                <td class="p-3"><span class="text-amber-600 dark:text-amber-400 font-semibold">Wajib String</span> jika angka diawali nol (mis. "08123..").</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">Uang, Pajak, Gaji, Saldo</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">decimal</td>
+                                <td class="p-3">Sangat akurat untuk finansial. Wajib suffix <code>m</code> (mis. <code>1000.50m</code>).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">IPK, Nilai Rata-rata, Fisika</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">double</td>
+                                <td class="p-3">Desimal standar tingkat tinggi (default pecahan di C#).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">Status Aktif/Tidak, Ya/Tidak</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">bool</td>
+                                <td class="p-3">Hanya bernilai <code>true</code> atau <code>false</code>.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">Satu Karakter (Huruf/Simbol)</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">char</td>
+                                <td class="p-3">Menggunakan tanda petik tunggal <code>'A'</code> (Beda dengan string <code>"A"</code>).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="p-3 font-medium">Nilai opsional / Belum diisi</td>
+                                <td class="p-3 font-mono text-brand-600 dark:text-brand-400 font-semibold">int? (Nullable)</td>
+                                <td class="p-3">Dapat berisi <code>null</code>. Memiliki properti <code>HasValue</code> dan operator null-coalescing <code>??</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="mt-4 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 flex items-start gap-3 text-sm">
+                    <i class="ph-bold ph-warning text-xl shrink-0 mt-0.5"></i>
+                    <div>
+                        <strong class="font-semibold">Jebakan Ujian:</strong> 
+                        Ekspresi <code>0.1 + 0.2 == 0.3</code> bernilai <span class="underline decoration-red-500 font-bold">False</span> pada tipe <code>double</code> akibat precision rounding IEEE 754, namun bernilai <span class="font-bold text-emerald-600 dark:text-emerald-400">True</span> pada tipe <code>decimal</code>. Selain itu, <code>int.MaxValue + 1</code> menghasilkan overflow menjadi <code>-2147483648</code> tanpa error jika tidak di dalam blok <code>checked</code>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversion & I/O -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Code Snippet Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i class="ph-bold ph-brackets-angle text-brand-500"></i> Safe Parsing Code Pattern
+                            </h3>
+                            <button onclick="copyCode('codeParse')" class="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 font-medium transition flex items-center gap-1">
+                                <i class="ph-bold ph-copy"></i> Copy
+                            </button>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                            <code>Console.ReadLine()</code> <b>selalu menghasilkan String</b>. Jangan gunakan <code>int.Parse</code> tanpa penanganan error karena program akan crash jika pengguna memasukkan huruf.
+                        </p>
+                        <pre id="codeParse" class="p-4 rounded-xl bg-slate-900 text-slate-100 text-xs sm:text-sm overflow-x-auto border border-slate-800 font-mono"><code>Console.Write("Masukkan angka umur: ");
+string input = Console.ReadLine();
+
+// Gunakan TryParse untuk konversi aman (anti-crash)
+bool isBerhasil = int.TryParse(input, out int umur);
+
+if (!isBerhasil || umur <= 0)
+{
+    Console.WriteLine("Error: Input bukan angka positif yang valid!");
+}
+else
+{
+    Console.WriteLine($"Umur Anda: {umur} tahun.");
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Formatting Table Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+                        <i class="ph-bold ph-paint-brush text-brand-500"></i> String Interpolation & Format Specifier
+                    </h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                        Gunakan awalan <code>$</code> untuk memasukkan variabel secara langsung ke dalam string: <code>$"Nama: {nama}"</code>.
+                    </p>
+                    <div class="space-y-2 text-xs sm:text-sm">
+                        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/50 flex justify-between items-center">
+                            <span class="font-mono text-brand-600 dark:text-brand-400">"{val:F2}"</span>
+                            <span class="text-slate-600 dark:text-slate-400">Fixed Point (2 Angka Desimal) → 3.14</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/50 flex justify-between items-center">
+                            <span class="font-mono text-brand-600 dark:text-brand-400">"{val:N0}"</span>
+                            <span class="text-slate-600 dark:text-slate-400">Number dengan pemisah ribuan → 1,000,000</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/50 flex justify-between items-center">
+                            <span class="font-mono text-brand-600 dark:text-brand-400">"{val:C0}"</span>
+                            <span class="text-slate-600 dark:text-slate-400">Currency / Mata Uang → Rp50.000</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/50 flex justify-between items-center">
+                            <span class="font-mono text-brand-600 dark:text-brand-400">"{val:P1}"</span>
+                            <span class="text-slate-600 dark:text-slate-400">Percentage → 85.5%</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/50 flex justify-between items-center">
+                            <span class="font-mono text-brand-600 dark:text-brand-400">"{val, -10}"</span>
+                            <span class="text-slate-600 dark:text-slate-400">Rata Kiri Kolom (Lebar 10 Karakter)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Common Errors Table -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+                    <i class="ph-bold ph-bug text-red-500"></i> Daftar Error C# yang Sering Keluar di Ujian
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs sm:text-sm">
+                    <div class="p-4 rounded-xl border border-red-100 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/20">
+                        <span class="font-mono font-bold text-red-600 dark:text-red-400">CS1002</span>
+                        <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">Semicolon missing</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Titik koma (;) lupa ditulis di akhir statement.</p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-red-100 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/20">
+                        <span class="font-mono font-bold text-red-600 dark:text-red-400">CS0103</span>
+                        <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">Name does not exist</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Variabel belum dideklarasikan atau salah penulisan kapital (Case-sensitive).</p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-red-100 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/20">
+                        <span class="font-mono font-bold text-red-600 dark:text-red-400">CS0029</span>
+                        <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">Cannot implicitly convert</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Tipe data tidak cocok, seperti tertukar <code>=</code> dengan <code>==</code> pada <code>if</code>.</p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-red-100 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/20">
+                        <span class="font-mono font-bold text-red-600 dark:text-red-400">CS0165</span>
+                        <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">Unassigned local variable</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Variabel digunakan sebelum diberi nilai awal (inisialisasi).</p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-red-100 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/20">
+                        <span class="font-mono font-bold text-red-600 dark:text-red-400">CS0136 / CS0128</span>
+                        <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">Variable re-declaration</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Nama variabel ganda dideklarasikan dalam scope <code>{ }</code> yang sama.</p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-amber-100 dark:border-amber-900/40 bg-amber-50/50 dark:bg-amber-950/20">
+                        <span class="font-mono font-bold text-amber-600 dark:text-amber-400">FormatException</span>
+                        <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">Runtime Exception</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Gagal konversi angka karena input teks bukan digit yang sah.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION W4 ================= -->
+        <section id="w4" class="tab-content hidden space-y-6">
+            <!-- Header Card -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-6 sm:p-8 shadow-lg">
+                <div class="flex items-center gap-2 text-blue-200 text-sm font-semibold uppercase tracking-wider mb-2">
+                    <i class="ph-bold ph-book-open"></i> Minggu 04
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold">Percabangan: IF-ELSE, Switch-Case & Operator Relasional</h2>
+                <p class="mt-2 text-blue-100 max-w-2xl">Memahami pengambilan keputusan dalam kode. Penggunaan operator pembanding, tabel kebenaran, serta sintaks percabangan modern.</p>
+            </div>
+
+            <!-- Operator Relasional Interactive Deep-Dive -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-4">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="ph-bold ph-scales text-blue-500"></i> Operator Pembanding (Relasional) Complete Guide
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                    Anggap setiap operator sebagai <b>pertanyaan Ya/Tidak</b> yang menghasilkan nilai <code>true</code> atau <code>false</code>.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs sm:text-sm">
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between font-bold text-blue-600 dark:text-blue-400 text-base mb-1">
+                            <span>==</span> <span>Sama Dengan</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">Memeriksa kecocokan nilai persis.</p>
+                        <p class="text-slate-400 mt-2 font-mono"><code>pin == 123456</code></p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between font-bold text-blue-600 dark:text-blue-400 text-base mb-1">
+                            <span>!=</span> <span>Tidak Sama Dengan</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">Memeriksa apakah nilainya berbeda.</p>
+                        <p class="text-slate-400 mt-2 font-mono"><code>bayar != totalHarga</code></p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between font-bold text-blue-600 dark:text-blue-400 text-base mb-1">
+                            <span>&gt;</span> <span>Lebih Dari</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">Nilai batas <b>TIDAK ikut</b> dihitung.</p>
+                        <p class="text-slate-400 mt-2 font-mono"><code>belanja &gt; 100000</code></p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between font-bold text-blue-600 dark:text-blue-400 text-base mb-1">
+                            <span>&lt;</span> <span>Kurang Dari</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">Batas atas <b>TIDAK ikut</b> dihitung.</p>
+                        <p class="text-slate-400 mt-2 font-mono"><code>umur &lt; 12</code></p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between font-bold text-blue-600 dark:text-blue-400 text-base mb-1">
+                            <span>&gt;=</span> <span>Minimal / Lebih Sama</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">Nilai batas <b>IKUT</b> dihitung.</p>
+                        <p class="text-slate-400 mt-2 font-mono"><code>tinggi &gt;= 120</code></p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between font-bold text-blue-600 dark:text-blue-400 text-base mb-1">
+                            <span>&lt;=</span> <span>Maksimal / Kurang Sama</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">Nilai batas <b>IKUT</b> dihitung.</p>
+                        <p class="text-slate-400 mt-2 font-mono"><code>berat &lt;= 20</code></p>
+                    </div>
+                </div>
+
+                <!-- Trik Mengingat -->
+                <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-slate-700 dark:text-slate-200 text-sm space-y-2">
+                    <div class="font-bold text-blue-700 dark:text-blue-300 flex items-center gap-2">
+                        <i class="ph-bold ph-lightbulb text-lg"></i> Trik Cepat Mengingat Operator:
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
+                        <li><b>Satu '=' adalah Pengisian (Assignment), Dua '==' adalah Pertanyaan (Comparison).</b> <code>x = 5</code> (isi nilai 5), <code>x == 5</code> (apakah x sama dengan 5?).</li>
+                        <li><b>Tanda Sama Selalu di Belakang:</b> Tulis <code>&gt;=</code> dan <code>&lt;=</code>, BUKAN <code>=&gt;</code> atau <code>=&lt;</code> (akan sintaks error).</li>
+                        <li><b>Rentang nilai ganda di C#:</b> Wajib gunakan operator logika <code>&amp;&amp;</code>. Contoh: <code>umur &gt;= 20 &amp;&amp; umur &lt;= 40</code> (Bentuk <code>20 &lt;= umur &lt;= 40</code> TIDAK valid di C#).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Switch Case vs IF Else -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- IF-ELSE Snippet -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                        <i class="ph-bold ph-code font-bold text-blue-500"></i> Konversi Nilai Angka ke Huruf (IF-ELSE)
+                    </h3>
+                    <pre class="p-4 rounded-xl bg-slate-900 text-slate-100 text-xs sm:text-sm overflow-x-auto border border-slate-800 font-mono"><code>if (nilai > 85) 
+    huruf = "A";
+else if (nilai > 75) 
+    huruf = "AB";
+else if (nilai > 65) 
+    huruf = "B";
+else if (nilai > 60) 
+    huruf = "BC";
+else if (nilai > 50) 
+    huruf = "C";
+else if (nilai > 40) 
+    huruf = "D";
+else 
+    huruf = "E";</code></pre>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                        *Catatan batas: Nilai 85 tepat menghasilkan "AB", bukan "A" karena menggunakan <code>&gt;</code> bukan <code>&gt;=</code>.
+                    </p>
+                </div>
+
+                <!-- Switch Case Snippet -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                        <i class="ph-bold ph-git-commit text-blue-500"></i> Struktur Switch-Case & Ternary
+                    </h3>
+                    <pre class="p-4 rounded-xl bg-slate-900 text-slate-100 text-xs sm:text-sm overflow-x-auto border border-slate-800 font-mono"><code>// Ternary Operator (Kondisi Singkat)
+string status = (nilai >= 75) ? "Lulus" : "Remidi";
+
+// Switch Case Standar
+switch (kodeHari)
+{
+    case 1: Console.WriteLine("Senin"); break;
+    case 2: Console.WriteLine("Selasa"); break;
+    default: Console.WriteLine("Hari Libur/Invalid"); break;
+}</code></pre>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                        *Di C#, kata kunci <code>break</code> wajib di setiap blok <code>case</code> untuk mencegah fall-through (menghindari CS0163).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION W6 ================= -->
+        <section id="w6" class="tab-content hidden space-y-6">
+            <!-- Header Card -->
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-2xl p-6 sm:p-8 shadow-lg">
+                <div class="flex items-center gap-2 text-purple-200 text-sm font-semibold uppercase tracking-wider mb-2">
+                    <i class="ph-bold ph-book-open"></i> Minggu 06
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold">Percabangan Bersarang (Nested IF)</h2>
+                <p class="mt-2 text-purple-100 max-w-2xl">Logika bertingkat di mana suatu percabangan berada di dalam percabangan lainnya. Analogi: Masuk ATM → Cek PIN → Cek Penarikan Saldo.</p>
+            </div>
+
+            <!-- Concept Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-4">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="ph-bold ph-shield-check text-purple-500"></i> Aturan Emas Nested IF
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                    Kondisi di tingkat dalam (inner IF) <b>HANYA AKAN DIPERIKSA</b> jika kondisi di tingkat luar (outer IF) bernilai <code class="text-purple-600 dark:text-purple-400 font-bold">true</code>. Jika kondisi luar <code>false</code>, blok dalam diabaikan secara total.
+                </p>
+
+                <!-- Code Example & Table Trace -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <pre class="p-4 rounded-xl bg-slate-900 text-slate-100 text-xs sm:text-sm overflow-x-auto border border-slate-800 font-mono"><code>if (nilai >= 75)
+{
+    Console.WriteLine("Status: LULUS");
+    
+    // Nested IF di dalam blok LULUS
+    if (nilai >= 90)
+    {
+        Console.WriteLine("Predikat: A (Sangat Memuaskan)");
+    }
+    else
+    {
+        Console.WriteLine("Predikat: B (Memuaskan)");
+    }
+}
+else
+{
+    Console.WriteLine("Status: TIDAK LULUS");
+}</code></pre>
+
+                    <!-- Execution Trace Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 dark:bg-slate-700/50 text-slate-700 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">
+                                    <th class="p-2.5">Input Nilai</th>
+                                    <th class="p-2.5">Cek (≥ 75)</th>
+                                    <th class="p-2.5">Cek (≥ 90)</th>
+                                    <th class="p-2.5">Output Terminal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700/60 text-slate-600 dark:text-slate-300">
+                                <tr>
+                                    <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">95</td>
+                                    <td class="p-2.5 text-emerald-600 font-semibold">True</td>
+                                    <td class="p-2.5 text-emerald-600 font-semibold">True</td>
+                                    <td class="p-2.5 font-mono text-xs">LULUS, Predikat A</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">80</td>
+                                    <td class="p-2.5 text-emerald-600 font-semibold">True</td>
+                                    <td class="p-2.5 text-red-500 font-semibold">False</td>
+                                    <td class="p-2.5 font-mono text-xs">LULUS, Predikat B</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">60</td>
+                                    <td class="p-2.5 text-red-500 font-semibold">False</td>
+                                    <td class="p-2.5 text-slate-400 italic">Tidak Dicek</td>
+                                    <td class="p-2.5 font-mono text-xs">TIDAK LULUS</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Common Pitfalls in Nested IF -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <h4 class="font-bold text-red-600 dark:text-red-400 flex items-center gap-2 mb-2">
+                        <i class="ph-bold ph-warning-circle"></i> 1. Pitfall Danling Else
+                    </h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Tanpa kurung kurawal <code>{ }</code>, pernyataan <code>else</code> akan selalu menempel pada <code>if</code> terdekat di atasnya, yang dapat memicu logika bug fatal.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <h4 class="font-bold text-purple-600 dark:text-purple-400 flex items-center gap-2 mb-2">
+                        <i class="ph-bold ph-arrows-split"></i> 2. Nested vs Operator &&
+                    </h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Gunakan <code>&amp;&amp;</code> jika semua syarat sepadan dan menghasilkan output sama. Gunakan <b>Nested IF</b> jika setiap tingkatan membutuhkan pesan error/aksi berbeda.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <h4 class="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-2 mb-2">
+                        <i class="ph-bold ph-stack"></i> 3. Kedalaman Indentasi
+                    </h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Hindari membuat Nested IF lebih dari 3 tingkat (*Arrow Anti-Pattern*). Pecah logika menggunakan klausa penjaga (*guard clauses*) atau return awal.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION SIMULATOR ================= -->
+        <section id="simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-3 bg-brand-100 dark:bg-brand-950 text-brand-600 dark:text-brand-400 rounded-xl">
+                        <i class="ph-bold ph-calculator text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Simulator Alur Nested IF & Grade Huruf</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Masukkan nilai ujian (0 - 100) untuk melihat simulasi eksekusi baris kode secara real-time.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Input Section -->
+                    <div class="lg:col-span-4 space-y-4">
+                        <div>
+                            <label for="simNilai" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                Input Nilai Angka:
+                            </label>
+                            <input type="number" id="simNilai" placeholder="Contoh: 85" min="0" max="100" value="85"
+                                class="w-full px-4 py-3 text-lg font-mono rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                        </div>
+
+                        <!-- Quick Presets -->
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-2">Uji Nilai Batas Cepat:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="setSimValue(95)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-brand-100 text-xs font-medium rounded-lg transition">95 (A)</button>
+                                <button onclick="setSimValue(85)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-brand-100 text-xs font-medium rounded-lg transition">85 (AB)</button>
+                                <button onclick="setSimValue(75)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-brand-100 text-xs font-medium rounded-lg transition">75 (B)</button>
+                                <button onclick="setSimValue(60)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-brand-100 text-xs font-medium rounded-lg transition">60 (C)</button>
+                                <button onclick="setSimValue(35)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-brand-100 text-xs font-medium rounded-lg transition">35 (E)</button>
+                            </div>
+                        </div>
+
+                        <!-- Output Badges -->
+                        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Grade Huruf (W4):</span>
+                                <span id="simGrade" class="text-2xl font-black text-brand-600 dark:text-brand-400">AB</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-slate-200 dark:border-slate-700 pt-2">
+                                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Status Kelulusan:</span>
+                                <span id="simStatus" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">LULUS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Execution Trace Output -->
+                    <div class="lg:col-span-8">
+                        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+                            <i class="ph-bold ph-terminal-window text-brand-500"></i> Visualisasi Penelusuran Logika (Step-by-Step Trace)
+                        </h4>
+                        <div id="simTrace" class="p-4 rounded-xl bg-slate-900 text-slate-200 font-mono text-xs sm:text-sm space-y-3 min-h-[220px] border border-slate-800">
+                            <!-- Injected by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION QUIZ ================= -->
+        <section id="quiz" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-xl">
+                            <i class="ph-bold ph-exam text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Kuis Latihan UTS C#</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Uji pemahaman konsep variabel, operator, error, dan nested IF.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="quizScoreBadge" class="text-sm font-bold px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+                            Skor: 0 / 6
+                        </span>
+                        <button onclick="resetQuiz()" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                            Reset Kuis
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Questions Container -->
+                <div id="quizContainer" class="space-y-6">
+                    <!-- Dynamic Quiz Rendered via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION CHECKLIST ================= -->
+        <section id="checklist" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                            <i class="ph-bold ph-check-square text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Checklist Kesiapan Ujian UTS</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Tandai poin materi yang sudah kamu kuasai. Progress tersimpan di browser.</p>
+                        </div>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="w-full sm:w-48">
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Progress Kesiapan</span>
+                            <span id="checkPercent">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                            <div id="progressBar" class="bg-emerald-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checklist List -->
+                <div id="checklistItems" class="space-y-3">
+                    <!-- Injected via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Disusun berdasarkan silabus W2, W4, dan W6 Algoritma & Pemrograman C# (.NET).</p>
+            <p class="mt-1">Semoga Sukses dalam Ujian Tengah Semester (UTS)! 🚀</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. TAB NAVIGATION SYSTEM ---
+        const navButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        function switchTab(targetId) {
+            tabContents.forEach(content => {
+                if (content.id === targetId) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+
+            navButtons.forEach(btn => {
+                if (btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('bg-brand-50', 'dark:bg-brand-900/40', 'text-brand-700', 'dark:text-brand-300', 'border', 'border-brand-200', 'dark:border-brand-800', 'active');
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-400');
+                } else {
+                    btn.classList.remove('bg-brand-50', 'dark:bg-brand-900/40', 'text-brand-700', 'dark:text-brand-300', 'border', 'border-brand-200', 'dark:border-brand-800', 'active');
+                    btn.classList.add('text-slate-600', 'dark:text-slate-400');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.getAttribute('data-target');
+                switchTab(target);
+            });
+        });
+
+        // --- 2. DARK MODE TOGGLE ---
+        const themeToggleBtn = document.getElementById('themeToggle');
+        
+        // Load saved theme or system preference
+        if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                showToast("Mode terang diaktifkan");
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                showToast("Mode gelap diaktifkan");
+            }
+        });
+
+        // --- 3. TOAST NOTIFICATION ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2500);
+        }
+
+        // --- 4. COPY CODE TO CLIPBOARD ---
+        function copyCode(elementId) {
+            const codeText = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                showToast("Kode berhasil disalin ke clipboard!");
+            }).catch(() => {
+                showToast("Gagal menyalin kode.");
+            });
+        }
+
+        // --- 5. SIMULATOR NILAI & NESTED IF LOGIC ---
+        const simInput = document.getElementById('simNilai');
+        const simGrade = document.getElementById('simGrade');
+        const simStatus = document.getElementById('simStatus');
+        const simTrace = document.getElementById('simTrace');
+
+        function setSimValue(val) {
+            simInput.value = val;
+            runSimulation();
+        }
+
+        function calculateGradeW4(n) {
+            if (n > 85) return "A";
+            if (n > 75) return "AB";
+            if (n > 65) return "B";
+            if (n > 60) return "BC";
+            if (n > 50) return "C";
+            if (n > 40) return "D";
+            return "E";
+        }
+
+        function runSimulation() {
+            const val = parseFloat(simInput.value);
+            if (isNaN(val)) {
+                simGrade.textContent = "-";
+                simStatus.textContent = "INVALID";
+                simStatus.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-700";
+                simTrace.innerHTML = `<span class="text-red-400">[System Error] Harap masukkan input angka yang valid.</span>`;
+                return;
+            }
+
+            const grade = calculateGradeW4(val);
+            simGrade.textContent = grade;
+
+            let steps = [];
+            steps.push(`<span class="text-slate-400">// Memulai eksekusi program dengan input nilai = ${val}</span>`);
+
+            // W4 Grade evaluation logic trace
+            steps.push(`<span class="text-brand-400">[W4 Evaluasi Grade]:</span> nilai ${val} > 85? <b>${val > 85 ? 'YA' : 'TIDAK'}</b>`);
+            if (val <= 85 && val > 75) {
+                steps.push(`<span class="text-brand-400">[W4 Evaluasi Grade]:</span> nilai ${val} > 75? <b>YA → Grade: AB</b>`);
+            }
+
+            // W6 Nested IF Execution Flow Trace
+            steps.push(`\n<span class="text-purple-400">[W6 Nested IF Trace]:</span> Cek Kondisi Luar: (nilai >= 75)`);
+            if (val >= 75) {
+                simStatus.textContent = "LULUS";
+                simStatus.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300";
+                
+                steps.push(`<span class="text-emerald-400">  └─ HASIL: TRUE.</span> Blok 'if (nilai >= 75)' Dijalankan.`);
+                steps.push(`  ├─ Output Terminal: <span class="text-yellow-300">"Status: LULUS"</span>`);
+                steps.push(`  └─ Memeriksa Nested IF Dalam: (nilai >= 90)`);
+
+                if (val >= 90) {
+                    steps.push(`<span class="text-emerald-400">      └─ HASIL: TRUE.</span>`);
+                    steps.push(`      └─ Output Terminal: <span class="text-yellow-300">"Predikat: A (Sangat Memuaskan)"</span>`);
+                } else {
+                    steps.push(`<span class="text-amber-400">      └─ HASIL: FALSE.</span> Masuk ke blok else bertingkat.`);
+                    steps.push(`      └─ Output Terminal: <span class="text-yellow-300">"Predikat: B (Memuaskan)"</span>`);
+                }
+            } else {
+                simStatus.textContent = "TIDAK LULUS";
+                simStatus.className = "px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300";
+                
+                steps.push(`<span class="text-red-400">  └─ HASIL: FALSE.</span> Masuk ke blok else luar.`);
+                steps.push(`  ├─ Output Terminal: <span class="text-yellow-300">"Status: TIDAK LULUS"</span>`);
+                steps.push(`  └─ <span class="text-slate-500 italic">Nested IF (nilai >= 90) dilewati sepenuhnya (tidak dievaluasi).</span>`);
+            }
+
+            simTrace.innerHTML = steps.join('\n');
+        }
+
+        simInput.addEventListener('input', runSimulation);
+        runSimulation(); // Init on load
+
+        // --- 6. INTERACTIVE QUIZ DATA & ENGINE ---
+        const quizQuestions = [
+            {
+                q: "Tipe data C# manakah yang paling tepat dan aman digunakan untuk menyimpan nilai transaksi uang / finansial?",
+                options: ["double", "float", "decimal", "int"],
+                answer: 2,
+                explain: "Tipe `decimal` dirancang khusus untuk perhitungan finansial karena tidak mengalami kesalahan pembulatan desimal biner seperti `double` atau `float`."
+            },
+            {
+                q: "Apa keluaran dari baris kode `Console.WriteLine(5 / 2);` di C#?",
+                options: ["2.5", "2", "2.0", "Error CS0029"],
+                answer: 1,
+                explain: "Pembagian antar bilangan bulat (int / int) di C# akan membuang sisa desimalnya dan menghasilkan integer (2). Untuk hasil 2.5 gunakan `5 / 2.0`."
+            },
+            {
+                q: "Manakah pernyataan yang benar mengenai kesalahan kompilasi `CS0029: Cannot implicitly convert type`?",
+                options: [
+                    "Titik koma (;) hilang di akhir baris.",
+                    "Tertukar menggunakan operator '=' alih-alih '==' pada kondisi if.",
+                    "Menggunakan variabel sebelum diisi nilai.",
+                    "Variabel tidak ditemukan di scope."
+                ],
+                answer: 1,
+                explain: "Menulis `if (nilai = 90)` akan mencoba meng-assign int 90 ke boolean kondisi if, yang memicu error tipe CS0029."
+            },
+            {
+                q: "Jika `nilai = 75`, apakah hasil evaluasi dari `nilai > 75` dan `nilai >= 75`?",
+                options: [
+                    "Keduanya bernilai true",
+                    "Keduanya bernilai false",
+                    "nilai > 75 (false), nilai >= 75 (true)",
+                    "nilai > 75 (true), nilai >= 75 (false)"
+                ],
+                answer: 2,
+                explain: "Operator `>` menolak nilai tepat pada batas (75 > 75 adalah false), sedangkan `>=` menerima nilai yang persis sama dengan batas."
+            },
+            {
+                q: "Apa fungsi utama kata kunci `break` pada blok `switch-case` di C#?",
+                options: [
+                    "Mengulangi eksekusi case",
+                    "Menghentikan eksekusi switch dan keluar dari blok agar tidak fall-through",
+                    "Mengonversi nilai ke string",
+                    "Menangani error exception"
+                ],
+                answer: 1,
+                explain: "Di C#, `break` wajib ditulis di akhir tiap case untuk mencegah eksekusi berlanjut ke case di bawahnya."
+            },
+            {
+                q: "Pada struktur Nested IF, kapan percabangan tingkat dalam (inner IF) akan dievaluasi?",
+                options: [
+                    "Selalu dievaluasi apapun kondisi luarnya",
+                    "Hanya jika kondisi luar bernilai true",
+                    "Hanya jika kondisi luar bernilai false",
+                    "Saat terjadi error pada program"
+                ],
+                answer: 1,
+                explain: "Aturan utama Nested IF: kondisi dalam hanya akan diperiksa oleh kompilator jika kondisi di tingkat luar memenuhi (true)."
+            }
+        ];
+
+        let userAnswers = Array(quizQuestions.length).fill(null);
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = quizQuestions.map((q, idx) => `
+                <div class="p-5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <p class="font-semibold text-slate-800 dark:text-slate-200 text-sm sm:text-base">
+                        ${idx + 1}. ${q.q}
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
+                        ${q.options.map((opt, oIdx) => `
+                            <button onclick="selectAnswer(${idx}, ${oIdx})" id="q_${idx}_opt_${oIdx}" 
+                                class="quiz-opt-btn p-3 rounded-lg border text-left transition ${
+                                    userAnswers[idx] === oIdx 
+                                        ? 'bg-brand-500 text-white border-brand-600 font-semibold' 
+                                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300'
+                                }">
+                                ${String.fromCharCode(65 + oIdx)}. ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="explain_${idx}" class="${userAnswers[idx] !== null ? '' : 'hidden'} p-3 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 text-xs mt-2 border border-blue-200 dark:border-blue-800">
+                        <span class="font-bold">Penjelasan:</span> ${q.explain}
+                    </div>
+                </div>
+            `).join('');
+            updateQuizScore();
+        }
+
+        function selectAnswer(qIdx, optIdx) {
+            userAnswers[qIdx] = optIdx;
+            renderQuiz();
+        }
+
+        function updateQuizScore() {
+            let score = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans === quizQuestions[idx].answer) score++;
+            });
+            document.getElementById('quizScoreBadge').textContent = `Skor: ${score} / ${quizQuestions.length}`;
+        }
+
+        function resetQuiz() {
+            userAnswers = Array(quizQuestions.length).fill(null);
+            renderQuiz();
+            showToast("Kuis telah di-reset!");
+        }
+
+        renderQuiz();
+
+        // --- 7. CHECKLIST PREPARATION SYSTEM ---
+        const checklistData = [
+            "Bisa menelusuri kode IF / ELSE IF / NESTED IF dengan tabel input → output secara akurat",
+            "Bisa menulis struktur program C# lengkap: input Console.ReadLine(), TryParse, percabangan, & output berformat",
+            "Dapat menggambar simbol flowchart standar (Terminator, Process, Decision, Data I/O)",
+            "Hafal pemilihan tipe data per kasus khusus (Uang → decimal, NIM/NIK → string, IPK → double)",
+            "Bisa menjelaskan perbedaan operator '=' (isi) vs '==' (pembanding) dan memicu error CS0029",
+            "Memahami perbedaan int.Parse (crash saat salah) vs int.TryParse (aman)",
+            "Memahami perbedaan konversi (int) cast (potong desimal) vs Math.Round (pembulatan terdekat)",
+            "Teliti pada batas nilai relasional (> vs >=) pada kriteria kelulusan dan nilai huruf"
+        ];
+
+        let savedChecklist = JSON.parse(localStorage.getItem('alpro_uts_check') || '{}');
+
+        function renderChecklist() {
+            const container = document.getElementById('checklistItems');
+            container.innerHTML = checklistData.map((item, idx) => `
+                <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/60 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/40 transition">
+                    <input type="checkbox" onchange="toggleCheck(${idx})" ${savedChecklist[idx] ? 'checked' : ''} 
+                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                    <span class="text-sm text-slate-700 dark:text-slate-300 ${savedChecklist[idx] ? 'line-through text-slate-400 dark:text-slate-500' : ''}">
+                        ${item}
+                    </span>
+                </label>
+            `).join('');
+
+            updateProgress();
+        }
+
+        function toggleCheck(idx) {
+            savedChecklist[idx] = !savedChecklist[idx];
+            localStorage.setItem('alpro_uts_check', JSON.stringify(savedChecklist));
+            renderChecklist();
+        }
+
+        function updateProgress() {
+            const total = checklistData.length;
+            const checkedCount = Object.values(savedChecklist).filter(Boolean).length;
+            const percent = Math.round((checkedCount / total) * 100);
+
+            document.getElementById('checkPercent').textContent = `${percent}%`;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+        }
+
+        renderChecklist();
+
+        // --- 8. SEARCH FILTER SYSTEM ---
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (!query) return;
+
+            // Simple scroll & highlight text match
+            const cards = document.querySelectorAll('.tab-content:not(.hidden) p, .tab-content:not(.hidden) td, .tab-content:not(.hidden) li');
+            cards.forEach(el => {
+                if (el.textContent.toLowerCase().includes(query)) {
+                    el.classList.add('bg-amber-100', 'dark:bg-amber-900/40');
+                    setTimeout(() => el.classList.remove('bg-amber-100', 'dark:bg-amber-900/40'), 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
